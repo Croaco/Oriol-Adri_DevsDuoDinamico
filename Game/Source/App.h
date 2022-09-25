@@ -13,6 +13,7 @@ class Render;
 class Textures;
 class Audio;
 class Scene;
+class EntityManager;
 
 class App
 {
@@ -74,6 +75,7 @@ public:
 	Textures* tex;
 	Audio* audio;
 	Scene* scene;
+	EntityManager* entityManager;
 
 private:
 
@@ -84,9 +86,11 @@ private:
 
 	List<Module*> modules;
 
-	// L01: TODO 2: Create new variables from pugui namespace:
+	// L01: DONE 2: Create new variables from pugui namespace:
 	// xml_document to store the config file and
 	// xml_node(s) to read specific branches of the xml
+	pugi::xml_document configFile;
+	pugi::xml_node configNode;
 
 	uint frames;
 	float dt;

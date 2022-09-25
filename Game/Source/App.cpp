@@ -5,6 +5,7 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "Scene.h"
+#include "EntityManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -23,6 +24,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new Textures();
 	audio = new Audio();
 	scene = new Scene();
+	entityManager = new EntityManager();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -31,6 +33,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(scene);
+	AddModule(entityManager);
 
 	// Render last to swap buffer
 	AddModule(render);
@@ -60,26 +63,25 @@ void App::AddModule(Module* module)
 // Called before render is available
 bool App::Awake()
 {
-	bool ret = true;
+	bool ret = false;
 
-	// L01: TODO 3: Write the content of the function LoadConfig() to load config from XML and call it here
+	// L01: DONE 3: Load config from XML
+	ret = LoadConfig();
 
-	if (ret)
+	if (ret == true)
 	{
-		// L01: TODO 4: Read the title from the config file and set the windows title 
-		// use the function SetTitle from the Window module
-		// check https://pugixml.org/docs/quickstart.html#loading
+		title = configNode.child("app").child("title").child_value(); // L01: DONE 4: Read the title from the config file
 
 		ListItem<Module*>* item;
 		item = modules.start;
 
 		while (item != NULL && ret == true)
 		{
-			// L01: TODO 5: Add a new argument to the Awake method to receive a pointer to an xml node.
+			// L01: DONE 5: Add a new argument to the Awake method to receive a pointer to an xml node.
 			// If the section with the module name exists in config.xml, fill the pointer with the valid xml_node
 			// that can be used to read all variables for that module.
 			// Send nullptr if the node does not exist in config.xml
-			pugi::xml_node node;
+			pugi::xml_node node = configNode.child(item->data->name.GetString());
 			ret = item->data->Awake(node);
 			item = item->next;
 		}
@@ -131,12 +133,17 @@ bool App::LoadConfig()
 {
 	bool ret = false;
 
-	// L01: TODO 3: Load config.xml file using load_file() method from the xml_document class
-	// check https://pugixml.org/docs/quickstart.html#loading
+	// L01: DONE 3: Load config.xml file using load_file() method from the xml_document class
+	pugi::xml_parse_result parseResult = configFile.load_file("config.xml");
 
-	// L01: TODO 3: Check result for loading errors. 
-	// If the result is ok get the main node of the XML
-	// else, log the error
+	// L01: DONE 3: Check result for loading errors
+	if (parseResult) {
+		ret = true;
+		configNode = configFile.child("config");
+	}
+	else {
+		LOG("Error in App::LoadConfig(): %s", parseResult.description());
+	}
 
 	return ret;
 }

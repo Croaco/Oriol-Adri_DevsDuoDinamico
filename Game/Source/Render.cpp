@@ -28,9 +28,11 @@ bool Render::Awake(pugi::xml_node& config)
 
 	Uint32 flags = SDL_RENDERER_ACCELERATED;
 
-	// TODO load vsync value from config file to enable or disable vsync
-	flags |= SDL_RENDERER_PRESENTVSYNC;
-	LOG("Using vsync");
+	if (config.child("vsync").attribute("value").as_bool(true) == true)
+	{
+		flags |= SDL_RENDERER_PRESENTVSYNC;
+		LOG("Using vsync");
+	}
 
 	renderer = SDL_CreateRenderer(app->win->window, -1, flags);
 
