@@ -17,7 +17,7 @@ Player::~Player() {
 
 }
 
-bool Player::Awake(pugi::xml_node& config) {
+bool Player::Awake() {
 
 	//L02: TODO 1: Initialize Player parameters
 

@@ -31,7 +31,7 @@ bool EntityManager::Awake(pugi::xml_node& config)
 		pEntity = item->data;
 
 		if (pEntity->active == false) continue;
-		ret = item->data->Awake(config);
+		ret = item->data->Awake();
 	}
 
 	return ret;

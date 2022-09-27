@@ -15,7 +15,7 @@ public:
 	
 	virtual ~Player();
 
-	bool Awake(pugi::xml_node& config);
+	bool Awake();
 
 	bool Start();
 
