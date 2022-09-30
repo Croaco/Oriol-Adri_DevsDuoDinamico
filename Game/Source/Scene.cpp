@@ -27,6 +27,8 @@ bool Scene::Awake(pugi::xml_node& config)
 
 	//L02: TODO 3: Instantiate the player using the entity manager
 
+	//L02: TODO 5: Get Player parameters from XML
+
 	return ret;
 }
 

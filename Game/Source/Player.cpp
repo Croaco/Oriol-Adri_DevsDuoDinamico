@@ -21,8 +21,6 @@ bool Player::Awake() {
 
 	//L02: TODO 1: Initialize Player parameters
 
-	//L02: TODO 5: Get Player parameters from XML
-
 	return true;
 }
 
