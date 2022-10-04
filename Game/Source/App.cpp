@@ -156,8 +156,9 @@ void App::PrepareUpdate()
 // ---------------------------------------------
 void App::FinishUpdate()
 {
-	// L03: TODO 1: This is a good place to call Load / Save methods
-
+	// L03: DONE 1: This is a good place to call Load / Save methods
+	if (loadGameRequested == true) LoadFromFile();
+	if (saveGameRequested == true) SaveToFile();
 }
 
 // Call modules before each loop iteration
@@ -268,11 +269,74 @@ const char* App::GetOrganization() const
 	return organization.GetString();
 }
 
-// L03: TODO 1: Implement methods to request load / save and methods 
+// L02: DONE 1: Implement methods to request load / save and methods 
 // for the real execution of load / save (to be implemented in TODO 5 and 7)
+void App::LoadGameRequest()
+{
+	// NOTE: We should check if SAVE_STATE_FILENAME actually exist
+	loadGameRequested = true;
+}
 
-// L03: TODO 5: Implement the method LoadFromFile() to actually load a xml file
+// ---------------------------------------
+void App::SaveGameRequest() 
+{
+	// NOTE: We should check if SAVE_STATE_FILENAME actually exist and... should we overwriten
+	saveGameRequested = true;
+}
+
+
+// L02: DONE 5: Implement the method LoadFromFile() to actually load a xml file
 // then call all the modules to load themselves
+bool App::LoadFromFile()
+{
+	bool ret = true;
 
-// L03: TODO 7: Implement the xml save method SaveToFile() for current state
+	pugi::xml_document gameStateFile;
+	pugi::xml_parse_result result = gameStateFile.load_file("save_game.xml");
+
+	if (result == NULL)
+	{
+		LOG("Could not load xml file savegame.xml. pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+	{
+		ListItem<Module*>* item;
+		item = modules.start;
+
+		while (item != NULL && ret == true)
+		{
+			ret = item->data->LoadState(gameStateFile.child("save_state").child(item->data->name.GetString()));
+			item = item->next;
+		}
+	}
+
+	loadGameRequested = false;
+
+	return ret;
+}
+
+// L02: DONE 7: Implement the xml save method SaveToFile() for current state
 // check https://pugixml.org/docs/quickstart.html#modify
+bool App::SaveToFile() 
+{
+	bool ret = false;
+
+	pugi::xml_document* saveDoc = new pugi::xml_document();
+	pugi::xml_node saveStateNode = saveDoc->append_child("save_state");
+
+	ListItem<Module*>* item;
+	item = modules.start;
+
+	while (item != NULL)
+	{
+		ret = item->data->SaveState(saveStateNode.append_child(item->data->name.GetString()));
+		item = item->next;
+	}
+
+	ret = saveDoc->save_file("save_game.xml");
+
+	saveGameRequested = false;
+
+	return ret;
+}

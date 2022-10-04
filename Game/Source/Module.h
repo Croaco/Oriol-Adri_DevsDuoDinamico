@@ -55,7 +55,16 @@ public:
 		return true;
 	}
 
-	// L03: TODO 2: Create new virtual methods to LoadState / SaveState
+	// L03: DONE 2: Create new virtual methods to LoadState / SaveState
+	virtual bool LoadState(pugi::xml_node&)
+	{
+		return true;
+	}
+
+	virtual bool SaveState(pugi::xml_node&)
+	{
+		return true;
+	}
 
 public:
 

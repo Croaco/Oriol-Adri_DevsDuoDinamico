@@ -46,7 +46,11 @@ public:
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
 
-	// L03: TODO 1: Create methods to control that the real Load and Save happens at the end of the frame
+	// L03: DONE 1: Create methods to control that the real Load and Save happens at the end of the frame
+	void LoadGameRequest();
+	void SaveGameRequest() ;
+	bool LoadFromFile();
+	bool SaveToFile() ;
 
 private:
 
@@ -97,7 +101,9 @@ private:
 	uint frames;
 	float dt;
 
-	// L03: TODO 1: Create control variables to control that the real Load and Save happens at the end of the frame
+	// L03: DONE 1: Create control variables to control that the real Load and Save happens at the end of the frame
+    bool saveGameRequested;
+	bool loadGameRequested;
 };
 
 extern App* app;
