@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "Scene.h"
 #include "EntityManager.h"
+#include "Map.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -47,6 +48,10 @@ bool Scene::Start()
 {
 	//img = app->tex->Load("Assets/Textures/test.png");
 	app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
+	
+	// L03: DONE: Load map
+	app->map->Load();
+
 	return true;
 }
 
@@ -78,7 +83,15 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		app->render->camera.x += 1;
 
-	//app->render->DrawTexture(img, 380, 100);
+	//app->render->DrawTexture(img, 380, 100); // Placeholder not needed any more
+
+	// Draw map
+	app->map->Draw();
+
+	// L04: TODO 7: Set the window title with map/tileset info
+	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d", 0,0,0,0,0);
+
+	app->win->SetTitle(title.GetString());
 
 	return true;
 }

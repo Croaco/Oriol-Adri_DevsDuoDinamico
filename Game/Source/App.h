@@ -6,6 +6,9 @@
 
 #include "PugiXml/src/pugixml.hpp"
 
+#define CONFIG_FILENAME		"config.xml"
+#define SAVE_STATE_FILENAME "save_game.xml"
+
 // Modules
 class Window;
 class Input;
@@ -14,6 +17,7 @@ class Textures;
 class Audio;
 class Scene;
 class EntityManager;
+class Map;
 
 class App
 {
@@ -82,6 +86,7 @@ public:
 	Audio* audio;
 	Scene* scene;
 	EntityManager* entityManager;
+	Map* map;
 
 private:
 
