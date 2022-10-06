@@ -26,19 +26,17 @@ bool Scene::Awake(pugi::xml_node& config)
 	LOG("Loading Scene");
 	bool ret = true;
 
-	//L02: DONE 3: Instantiate the player using the entity manager
-	player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
-	player->parameters = config.child("player");
-
 	// iterate all objects in the scene
 	// Check https://pugixml.org/docs/quickstart.html#access
-
 	for (pugi::xml_node itemNode = config.child("item"); itemNode; itemNode = itemNode.next_sibling("item"))
 	{
 		Item* item = (Item*)app->entityManager->CreateEntity(EntityType::ITEM);
 		item->parameters = itemNode;
 	}
 
+	//L02: DONE 3: Instantiate the player using the entity manager
+	player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
+	player->parameters = config.child("player");
 
 	return ret;
 }
@@ -51,6 +49,16 @@ bool Scene::Start()
 	
 	// L03: DONE: Load map
 	app->map->Load();
+
+	// L04: DONE 7: Set the window title with map/tileset info
+	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
+		app->map->mapData.width,
+		app->map->mapData.height,
+		app->map->mapData.tileWidth,
+		app->map->mapData.tileHeight,
+		app->map->mapData.tilesets.Count());
+
+	app->win->SetTitle(title.GetString());
 
 	return true;
 }
@@ -72,31 +80,21 @@ bool Scene::Update(float dt)
 		app->LoadGameRequest();
 
 	if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		app->render->camera.y -= 1;
-
-	if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		app->render->camera.y += 1;
 
+	if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+		app->render->camera.y -= 1;
+
 	if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		app->render->camera.x -= 1;
+		app->render->camera.x += 1;
 
 	if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		app->render->camera.x += 1;
+		app->render->camera.x -= 1;
 
 	//app->render->DrawTexture(img, 380, 100); // Placeholder not needed any more
 
 	// Draw map
 	app->map->Draw();
-
-	// L04: TODO 7: Set the window title with map/tileset info
-	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d", 
-		app->map->mapData.width, 
-		app->map->mapData.height, 
-		app->map->mapData.tileWidth, 
-		app->map->mapData.tileHeight, 
-		app->map->mapData.tilesets.Count());
-
-	app->win->SetTitle(title.GetString());
 
 	return true;
 }
