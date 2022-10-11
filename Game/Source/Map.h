@@ -39,7 +39,24 @@ enum MapTypes
 struct MapLayer
 {
 
+	SString	name;
+	int width;
+	int height;
+	uint* data;
+
+	MapLayer() : data(NULL)
+	{}
+
+	~MapLayer()
+	{
+		RELEASE(data);
+	}
+
 	// L05: TODO 6: Short function to get the gid value of x,y
+	inline uint Get(int x, int y) const
+	{
+		return data[(y * width) + x];
+	}
 };
 
 // L04: DONE 1: Create a struct needed to hold the information to Map node
@@ -53,6 +70,7 @@ struct MapData
 	MapTypes type;
 
 	// L05: TODO 2: Add a list/array of layers to the map
+	List<MapLayer*> maplayers;
 };
 
 class Map : public Module
