@@ -56,8 +56,8 @@ void Map::Draw()
 
     while (mapLayerItem != NULL) {
 
-        //L06: TODO 7: use GetProperty method to ask each layer if your “Draw” property is true.
-        if (mapLayerItem->data->properties.GetProperty("Draw") == 1) {
+        //L06: DONE 7: use GetProperty method to ask each layer if your “Draw” property is true.
+        if (mapLayerItem->data->properties.GetProperty("Draw") != NULL && mapLayerItem->data->properties.GetProperty("Draw")->value) {
 
             for (int x = 0; x < mapLayerItem->data->width; x++)
             {
@@ -66,7 +66,7 @@ void Map::Draw()
                     // L05: DONE 9: Complete the draw function
                     int gid = mapLayerItem->data->Get(x, y);
 
-                    //L06: TODO 3: Obtain the tile set using GetTilesetFromTileId
+                    //L06: DONE 3: Obtain the tile set using GetTilesetFromTileId
                     TileSet* tileset = GetTilesetFromTileId(gid);
 
                     SDL_Rect r = tileset->GetTileRect(gid);
@@ -111,7 +111,7 @@ SDL_Rect TileSet::GetTileRect(int gid) const
 }
 
 
-// L06: TODO 2: Pick the right Tileset based on a tile id
+// L06: DONE 2: Pick the right Tileset based on a tile id
 TileSet* Map::GetTilesetFromTileId(int gid) const
 {
     ListItem<TileSet*>* item = mapData.tilesets.start;
@@ -292,7 +292,7 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
     layer->width = node.attribute("width").as_int();
     layer->height = node.attribute("height").as_int();
 
-    //L06: TODO 6 Call Load Propoerties
+    //L06: DONE 6 Call Load Propoerties
     LoadProperties(node, layer->properties);
 
     //Reserve the memory for the data 
@@ -328,7 +328,7 @@ bool Map::LoadAllLayers(pugi::xml_node mapNode) {
     return ret;
 }
 
-// L06: TODO 6: Load a group of properties from a node and fill a list with it
+// L06: DONE 6: Load a group of properties from a node and fill a list with it
 bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 {
     bool ret = false;
@@ -346,21 +346,22 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 }
 
 
-// L06: TODO 7: Ask for the value of a custom property
-int Properties::GetProperty(const char* value, int defaultValue) const
+// L06: DONE 7: Ask for the value of a custom property
+Properties::Property* Properties::GetProperty(const char* name)
 {
-    //...
-
     ListItem<Property*>* item = list.start;
+    Property* p = NULL;
 
     while (item)
     {
-        if (item->data->name == value)
-            return item->data->value;
+        if (item->data->name == name) {
+            p = item->data;
+            break;
+        }
         item = item->next;
     }
 
-    return defaultValue;
+    return p;
 }
 
 

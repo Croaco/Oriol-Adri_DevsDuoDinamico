@@ -3142,10 +3142,4 @@
    <tile gid="49"/>
   </data>
  </layer>
- <objectgroup id="4" name="Colisions Objects">
-  <properties>
-   <property name="Draw" type="bool" value="false"/>
-  </properties>
-  <object id="7" x="223" y="545" width="256" height="61"/>
- </objectgroup>
 </map>
