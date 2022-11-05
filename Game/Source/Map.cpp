@@ -205,6 +205,47 @@ bool Map::Load()
     // L07 DONE 7: Assign collider type
     c3->ctype = ColliderType::PLATFORM;
 
+    PhysBody* c4 = app->physics->CreateRectangle(640 + 352/2, 704 + 30, 352, 61, STATIC);
+    c4->ctype = ColliderType::PLATFORM;
+    
+    PhysBody* c5 = app->physics->CreateRectangle(768 + 64, 480 + 31, 128, 63, STATIC);
+    c5->ctype = ColliderType::PLATFORM;
+
+    PhysBody* c6 = app->physics->CreateRectangle(640 + 64, 320 + 32, 128, 64, STATIC);
+    c6->ctype = ColliderType::PLATFORM;
+    
+    //4x4 platforms
+    PhysBody* c7 = app->physics->CreateRectangle(1024 + 32, 384 + 32, 64, 64, STATIC);
+    c7->ctype = ColliderType::PLATFORM;
+
+    PhysBody* c8 = app->physics->CreateRectangle(1152 + 32, 288 + 32, 64, 64, STATIC);
+    c8->ctype = ColliderType::PLATFORM;
+
+    //5x2 platform
+    PhysBody* c9 = app->physics->CreateRectangle(1312 + 80, 224 + 32, 160, 64, STATIC);
+    c9->ctype = ColliderType::PLATFORM;
+
+    //2x3 platforms - bridge
+    PhysBody* c10 = app->physics->CreateRectangle(1088 + 48, 640 + 32, 96, 64, STATIC);
+    c10->ctype = ColliderType::PLATFORM;
+
+    PhysBody* c11 = app->physics->CreateRectangle(1280 + 48, 640 + 32, 96, 64, STATIC);
+    c11->ctype = ColliderType::PLATFORM;
+
+    //17x2 final platform
+    PhysBody* c12 = app->physics->CreateRectangle(1473 + 272, 704 + 32, 544, 64, STATIC);
+    c12->ctype = ColliderType::PLATFORM;
+
+    //2x20 vertical limits
+    PhysBody* c13 = app->physics->CreateRectangle(1984 + 16, 55 + 336, 32, 672, STATIC);
+    c13->ctype = ColliderType::PLATFORM;
+
+    PhysBody* c14 = app->physics->CreateRectangle(32 + 16, 64 + 336, 32, 672, STATIC);
+    c14->ctype = ColliderType::PLATFORM;
+
+    //60x1 ceiling
+    PhysBody* c15 = app->physics->CreateRectangle(64 + 960, 32 + 16, 1920, 32, STATIC);
+    c15->ctype = ColliderType::PLATFORM;
 
     if(ret == true)
     {

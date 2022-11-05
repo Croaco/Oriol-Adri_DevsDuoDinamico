@@ -90,6 +90,10 @@ bool Scene::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		app->render->camera.x -= 1;
+	
+	//how to hide colliders
+	//if (app->input->GetKey(SDL_SCANCODE_F7)== KEY_DOWN)
+		
 
 	// Draw map
 	app->map->Draw();
