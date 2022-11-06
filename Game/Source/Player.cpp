@@ -53,6 +53,7 @@ bool Player::Start() {
 
 	//initialize audio effect
 	pickCoinFxId = app->audio->LoadFx(parameters.attribute("coinfxfolder").as_string());
+	deathFxId = app->audio->LoadFx(parameters.attribute("deathsound").as_string());
 
 	return true;
 }
@@ -150,6 +151,10 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			if ((pbody->body->GetPosition().y < physB->body->GetPosition().y)) {
 				jump = { false, 0, jump.maxJumps, 0, jump.jumpImpulse };
 			}
+			break;
+		case ColliderType::DEATH:
+			LOG("Collision DEATH");
+			app->audio->PlayFx(deathFxId);
 			break;
 		case ColliderType::UNKNOWN:
 			LOG("Collision UNKNOWN");

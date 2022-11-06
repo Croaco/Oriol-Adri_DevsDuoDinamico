@@ -56,6 +56,7 @@ private:
 
 	iPoint startingPosition;
 	int pickCoinFxId;
+	int deathFxId;
 	uint cameraXCorrection, cameraYCorrection;
 
 	std::map<animationNames, DynArray<char*>> animations;

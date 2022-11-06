@@ -20,6 +20,7 @@
     <music volume="128"/>
     <fx volume="128"/>
     <coinfxfolder path = "Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg"/>
+    <deathsound path =" Assets/Audio/Fx/death.wav"/>
   </audio>
 
   <!-- L02: DONE: Add an element for the entity manager and add the player parameters -->

@@ -247,6 +247,15 @@ bool Map::Load()
     PhysBody* c15 = app->physics->CreateRectangle(64 + 960, 32 + 16, 1920, 32, STATIC);
     c15->ctype = ColliderType::PLATFORM;
 
+    //DEATH PITS
+    PhysBody* deathPit1 = app->physics->CreateRectangle(543 + 48, 747 + 8, 96, 16, STATIC);
+    deathPit1->ctype = ColliderType::DEATH;
+
+    PhysBody* deathPit2 = app->physics->CreateRectangle(992 + 240, 747 + 8, 480, 16, STATIC);
+    deathPit2->ctype = ColliderType::DEATH;
+
+
+
     if(ret == true)
     {
         // L04: DONE 5: LOG all the data loaded iterate all tilesets and LOG everything
