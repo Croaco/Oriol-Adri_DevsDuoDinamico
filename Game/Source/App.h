@@ -88,7 +88,7 @@ public:
 	Audio* audio;
 	Scene* scene;
 	EntityManager* entityManager;
-	Map* map;
+	Map* level;
 	//L07 DONE 2: Add Physics module
 	Physics* physics;
 

@@ -6,6 +6,8 @@
 #include "Input.h"
 #include "Render.h"
 
+#include "Box2D/Box2D/Box2D.h"
+
 class PhysBody;
 
 enum class EntityType

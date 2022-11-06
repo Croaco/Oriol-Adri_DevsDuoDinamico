@@ -16,7 +16,6 @@ EntityManager::EntityManager() : Module()
 // Destructor
 EntityManager::~EntityManager()
 {
-	RELEASE(pointerToPlayer);
 }
 
 // Called before render is available
@@ -89,7 +88,6 @@ Entity* EntityManager::CreateEntity(EntityType type)
 
 	case EntityType::PLAYER:
 		entity = new Player();
-		pointerToPlayer = (Player*)entity;
 		break;
 
 	case EntityType::ITEM:
@@ -137,6 +135,7 @@ bool EntityManager::Update(float dt)
 	return ret;
 }
 
+/*
 PhysBody* EntityManager::GetPlayerBody() {
 
 	ListItem<Entity*>* item;
@@ -151,4 +150,4 @@ PhysBody* EntityManager::GetPlayerBody() {
 	}
 
 	return nullptr;
-}
+}*/

@@ -25,16 +25,19 @@ bool Player::Awake() {
 	//texturePath = "Assets/Textures/player/idle1.png";
 
 	//L02: DONE 5: Get Player parameters from XML
-	position.x = parameters.attribute("x").as_int();
-	position.y = parameters.attribute("y").as_int();
+	position = { parameters.attribute("x").as_int(), parameters.attribute("y").as_int() };
+	startingPosition = position;
 	texturePath = parameters.attribute("texturepath").as_string();
-
 	jump = { false, 0, parameters.attribute("maxjumps").as_int(), 0, parameters.attribute("jumpimpulse").as_float()};
+
+	
 
 	return true;
 }
 
 bool Player::Start() {
+
+	app->win->GetWindowSize(cameraXCorrection, cameraYCorrection);
 
 	//initilize textures
 	texture = app->tex->Load(texturePath);
@@ -59,7 +62,7 @@ bool Player::Update()
 
 	if (jump.bJumping) {
 		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP) jump.bJumping = false;
- 		jump.timeSinceLastJump++;
+		jump.timeSinceLastJump++;
 	}
 
 	b2Vec2 vel = pbody->body->GetLinearVelocity();
@@ -79,10 +82,16 @@ bool Player::Update()
 	}
 
 	float maxVel = 5.0f;
+	bool moveCamera = false;
 
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) impulse.x = b2Max(vel.x - 0.25f, maxVel * -1);
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) impulse.x = b2Min(vel.x + 0.25f, maxVel);
-
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+		impulse.x = b2Max(vel.x - 0.25f, maxVel * -1);
+		moveCamera = true;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		impulse.x = b2Min(vel.x + 0.25f, maxVel);
+		moveCamera = true;
+	}
 	if (!impulse.x) impulse.x = vel.x * 0.98f;
 
 	pbody->body->SetLinearVelocity(b2Vec2(impulse.x, pbody->body->GetLinearVelocity().y));
@@ -91,6 +100,18 @@ bool Player::Update()
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;
 
+	if (moveCamera){
+		if (app->render->camera.x <= 0 && position.x >= startingPosition.x) {
+			if (abs(app->render->camera.x) + cameraXCorrection <= app->level->mapData.width * app->level->mapData.tileWidth) {
+				app->render->camera.x -= (impulse.x * 0.90);
+				if (app->render->camera.x > 0) app->render->camera.x = 0;
+			}
+			else if (impulse.x < 0) {
+				app->render->camera.x -= (impulse.x * 0.90);
+			}
+		}
+		
+	}
 
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 
@@ -99,7 +120,11 @@ bool Player::Update()
 
 	}
 	
-	app->render->DrawTexture(texture, position.x , position.y);
+	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
+		RestartLevel();
+	}
+
+	app->render->DrawTexture(texture, position.x, position.y);
 
 	return true;
 }
@@ -130,5 +155,13 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			LOG("Collision UNKNOWN");
 			break;
 	}
+}
+
+void Player::RestartLevel()
+{
+	position = startingPosition;
+	jump = { false, 0, parameters.attribute("maxjumps").as_int(), 0, parameters.attribute("jumpimpulse").as_float() };
+	app->render->camera.x = 0;
+	app->render->camera.y = 0;
 }
 

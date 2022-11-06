@@ -4,11 +4,21 @@
 #pragma once
 #include "Entity.h"
 #include "Point.h"
+#include "Window.h"
+#include "Map.h"
+#include "DynArray.h"
+#include <map>
 
 #include "Module.h"
 #include "SDL/include/SDL.h"
 
 struct SDL_Texture;
+
+enum animationNames {
+	IDLE,
+	WALKING,
+	DEAD
+};
 
 class Player : public Entity
 {
@@ -28,6 +38,7 @@ public:
 
 	// L07 DONE 6: Define OnCollision function for the player. Check the virtual function on Entity class
 	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void RestartLevel();
 
 public:
 
@@ -43,7 +54,11 @@ private:
 	PhysBody* pbody;
 	entityJump jump;
 
+	iPoint startingPosition;
 	int pickCoinFxId;
+	uint cameraXCorrection, cameraYCorrection;
+
+	std::map<animationNames, DynArray<char*>> animations;
 
 };
 

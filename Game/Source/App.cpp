@@ -29,7 +29,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	physics = new Physics();
 	scene = new Scene();
 	entityManager = new EntityManager();
-	map = new Map();
+	level = new Map();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -41,7 +41,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(physics);
 	AddModule(scene);
 	AddModule(entityManager);
-	AddModule(map);
+	AddModule(level);
 
 	// Render last to swap buffer
 	AddModule(render);

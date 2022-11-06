@@ -34,12 +34,11 @@ public:
 
 	void AddEntity(Entity* entity);
 
-	PhysBody* GetPlayerBody();
+	//PhysBody* GetPlayerBody();
 
 public:
 
 	List<Entity*> entities;
-	const Player* pointerToPlayer;
 
 };
 
