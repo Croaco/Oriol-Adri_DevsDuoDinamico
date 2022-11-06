@@ -9,6 +9,11 @@
 
 struct SDL_Rect;
 
+enum class MovementKeyPressed
+{
+	Q, W, E, R
+};
+
 enum EventWindow
 {
 	WE_QUIT = 0,

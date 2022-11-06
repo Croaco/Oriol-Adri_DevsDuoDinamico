@@ -15,7 +15,9 @@ EntityManager::EntityManager() : Module()
 
 // Destructor
 EntityManager::~EntityManager()
-{}
+{
+	RELEASE(pointerToPlayer);
+}
 
 // Called before render is available
 bool EntityManager::Awake(pugi::xml_node& config)
@@ -87,6 +89,7 @@ Entity* EntityManager::CreateEntity(EntityType type)
 
 	case EntityType::PLAYER:
 		entity = new Player();
+		pointerToPlayer = (Player*)entity;
 		break;
 
 	case EntityType::ITEM:
@@ -132,4 +135,20 @@ bool EntityManager::Update(float dt)
 	}
 
 	return ret;
+}
+
+PhysBody* EntityManager::GetPlayerBody() {
+
+	ListItem<Entity*>* item;
+	Entity* pEntity = NULL;
+
+	for (item = entities.start; item != NULL; item = item->next)
+	{
+		if (item->data->name == "Player") {
+			Player* a = (Player*)item;
+			//return a->pbody;
+		}
+	}
+
+	return nullptr;
 }

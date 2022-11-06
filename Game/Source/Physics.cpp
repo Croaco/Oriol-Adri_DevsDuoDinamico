@@ -9,6 +9,7 @@
 #include "Render.h"
 #include "Player.h"
 #include "Window.h"
+#include "EntityManager.h"
 #include "Box2D/Box2D/Box2D.h"
 
 // Tell the compiler to reference the compiled Box2D libraries
@@ -29,6 +30,7 @@ Physics::Physics() : Module()
 Physics::~Physics()
 {
 	// You should do some memory cleaning here, if required
+	RELEASE(world);
 }
 
 bool Physics::Start()
@@ -53,6 +55,8 @@ bool Physics::PreUpdate()
 	// WARNING: WE ARE STEPPING BY CONSTANT 1/60 SECONDS!
 	world->Step(1.0f / 60.0f, 6, 2);
 
+	//pbody->body->ApplyForce(pbody->body->GetMass()*)
+
 	// Because Box2D does not automatically broadcast collisions/contacts with sensors, 
 	// we have to manually search for collisions and "call" the equivalent to the ModulePhysics::BeginContact() ourselves...
 	for (b2Contact* c = world->GetContactList(); c; c = c->GetNext())
@@ -67,7 +71,7 @@ bool Physics::PreUpdate()
 			if (pb1 && pb2 && pb1->listener)
 				pb1->listener->OnCollision(pb1, pb2);
 		}
-	}
+	}	
 
 	return ret;
 }

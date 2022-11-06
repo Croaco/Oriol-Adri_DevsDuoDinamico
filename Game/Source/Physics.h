@@ -61,7 +61,7 @@ public:
 	Physics();
 	~Physics();
 
-	// Main module steps
+	// Main modules
 	bool Start();
 	bool PreUpdate();
 	bool PostUpdate();

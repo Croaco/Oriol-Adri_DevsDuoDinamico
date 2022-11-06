@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Entity.h"
+#include "Player.h"
 #include "List.h"
 
 class EntityManager : public Module
@@ -33,9 +34,12 @@ public:
 
 	void AddEntity(Entity* entity);
 
+	PhysBody* GetPlayerBody();
+
 public:
 
 	List<Entity*> entities;
+	const Player* pointerToPlayer;
 
 };
 

@@ -1,8 +1,11 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 
+#pragma once
 #include "Entity.h"
 #include "Point.h"
+
+#include "Module.h"
 #include "SDL/include/SDL.h"
 
 struct SDL_Texture;
@@ -26,8 +29,9 @@ public:
 	// L07 DONE 6: Define OnCollision function for the player. Check the virtual function on Entity class
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
-
 public:
+
+
 
 private:
 
@@ -37,6 +41,7 @@ private:
 
 	// L07 DONE 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
+	entityJump jump;
 
 	int pickCoinFxId;
 

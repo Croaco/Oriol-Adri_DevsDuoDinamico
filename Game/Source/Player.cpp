@@ -29,6 +29,8 @@ bool Player::Awake() {
 	position.y = parameters.attribute("y").as_int();
 	texturePath = parameters.attribute("texturepath").as_string();
 
+	jump = { false, 0, parameters.attribute("maxjumps").as_int(), 0, parameters.attribute("jumpimpulse").as_float()};
+
 	return true;
 }
 
@@ -46,8 +48,8 @@ bool Player::Start() {
 	// L07 DONE 7: Assign collider type
 	pbody->ctype = ColliderType::PLAYER;
 
-	//initialize audio effect - !! Path is hardcoded, should be loaded from config.xml
-	pickCoinFxId = app->audio->LoadFx("Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg");
+	//initialize audio effect
+	pickCoinFxId = app->audio->LoadFx(parameters.attribute("coinfxfolder").as_string());
 
 	return true;
 }
@@ -55,37 +57,48 @@ bool Player::Start() {
 bool Player::Update()
 {
 
-	// L07 DONE 5: Add physics to the player - updated player position using physics
-
-	int speed = 10; 
-	b2Vec2 vel = b2Vec2(0, -GRAVITY_Y/2);
-
-	//L02: DONE 4: modify the position of the player using arrow keys and render the texture
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-		vel = b2Vec2(0, GRAVITY_Y);
-	}
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
-		vel = b2Vec2(0, GRAVITY_Y);
-	}
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-		//
-	}
-		
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		vel = b2Vec2(-speed, -GRAVITY_Y/2);
+	if (jump.bJumping) {
+		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP) jump.bJumping = false;
+ 		jump.timeSinceLastJump++;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		vel = b2Vec2(speed, -GRAVITY_Y/2);
+	b2Vec2 vel = pbody->body->GetLinearVelocity();
+	b2Vec2 impulse = b2Vec2_zero;
+
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+		if (!jump.bJumping && jump.currentJumps <= jump.maxJumps) {
+			jump.bJumping = true;
+			jump.timeSinceLastJump = 0;
+			jump.currentJumps++;
+
+			impulse.y = jump.jumpImpulse * -1;
+
+			pbody->body->SetLinearVelocity(b2Vec2(vel.x, 0));
+			pbody->body->ApplyLinearImpulse(b2Vec2(0, impulse.y), pbody->body->GetWorldCenter(), true);
+		}
 	}
 
-	//Set the velocity of the pbody of the player
-	pbody->body->SetLinearVelocity(vel);
+	float maxVel = 5.0f;
+
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) impulse.x = b2Max(vel.x - 0.25f, maxVel * -1);
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) impulse.x = b2Min(vel.x + 0.25f, maxVel);
+
+	if (!impulse.x) impulse.x = vel.x * 0.98f;
+
+	pbody->body->SetLinearVelocity(b2Vec2(impulse.x, pbody->body->GetLinearVelocity().y));
 
 	//Update player position in pixels
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;
 
+
+	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+
+	}	
+	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+
+	}
+	
 	app->render->DrawTexture(texture, position.x , position.y);
 
 	return true;
@@ -109,12 +122,13 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			break;
 		case ColliderType::PLATFORM:
 			LOG("Collision PLATFORM");
+			if ((pbody->body->GetPosition().y < physB->body->GetPosition().y)) {
+				jump = { false, 0, jump.maxJumps, 0, jump.jumpImpulse };
+			}
 			break;
 		case ColliderType::UNKNOWN:
 			LOG("Collision UNKNOWN");
 			break;
 	}
-	
-
-
 }
+

@@ -15,6 +15,12 @@ enum class EntityType
 	UNKNOWN
 };
 
+struct entityJump {
+	bool bJumping;
+	int currentJumps, maxJumps, timeSinceLastJump;
+	float jumpImpulse;
+};
+
 class Entity
 {
 public:
@@ -72,6 +78,8 @@ public:
 	virtual void OnCollision(PhysBody* physA, PhysBody* physB) {
 	
 	};
+	
+	virtual void jumpOnNextUpdate(bool bStartJumpOnUpdate) {};
 
 public:
 

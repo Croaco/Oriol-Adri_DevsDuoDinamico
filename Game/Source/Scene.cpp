@@ -56,7 +56,8 @@ bool Scene::Start()
 		app->map->mapData.height,
 		app->map->mapData.tileWidth,
 		app->map->mapData.tileHeight,
-		app->map->mapData.tilesets.Count());
+		app->map->mapData.tilesets.Count()
+	);
 
 	app->win->SetTitle(title.GetString());
 
