@@ -1,26 +1,22 @@
-# {Project Name}
+# The wonderful world of Arya
 
 ## Description
 
-{project description}
+Game development project for the subject of Development in the Game design and devlopment degree in CITM UPC. Made by Oriol Rodríguez (@Eweer) and Adrià Belmonte(@Croaco). Creation of a platformer game through the usage of SDL and Box2D.
 
 ## Key Features
 
- - {Feature01}
- - {Feature02}
- - {Feature03}
- - {Feature04}
+
  
 ## Controls
 
- - {ControlsScheme}
+ - W/A/S/D Movement
+ - Space for jump
 
 ## Developers
 
- - {Dev01} - {Role(s)}
- - {Dev02} - {Role(s)}
- - {Dev03} - {Role(s)}
- - {Dev04} - {Role(s)}
+ - Oriol Rodríguez (@Eweer) - Programmer
+ - Adrià Belmonte (@Croaco) - Programmer
 
 ## License
 
