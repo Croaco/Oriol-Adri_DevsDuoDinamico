@@ -2,7 +2,7 @@
 
 ## Description
 
-Game development project for the subject of Development in the Game design and devlopment degree in CITM UPC. Made by Oriol Rodríguez ([@Eweer](https://github.com/Eweer)) and Adrià Belmonte([@Croaco](https://github.com/Croaco)). Creation of a platformer game through the usage of SDL and Box2D.
+Project for the subject of Game Development in the _Game Design and Development_ degree in CITM UPC. Made by Oriol Rodríguez ([@Eweer](https://github.com/Eweer)) and Adrià Belmonte([@Croaco](https://github.com/Croaco)). Creation of a platformer game through the usage of SDL and Box2D.
 
 ## Key Features
 
